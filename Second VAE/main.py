@@ -158,16 +158,16 @@ if args.action == 'calibrate':
     kl_losses = [i.item() for i in kl_losses]
     mse_losses = [i.item() for i in mse_losses]
     #ce_losses = [i.item() for i in ce_losses]
-    with open(f'cal_{".".join(args.weights.split(".")[:-1])}.json', 'w') as cal_f:
-        cal_f.write(json.dumps({'kl_loss': kl_losses, 'mse_loss': mse_losses}))
+    # with open(f'cal_{".".join(args.weights.split(".")[:-1])}.json', 'w') as cal_f:
+    #     cal_f.write(json.dumps({'kl_loss': kl_losses, 'mse_loss': mse_losses}))
     for i in range(len(final)):
         input_matrix = final[i][1][0][0] 
         output_matrix = final[i][2][0][0] 
         matrix_shape = input_matrix.shape
         input_img = input_matrix.cpu().numpy()
         output_img = output_matrix.cpu().numpy()
-        numpy.savetxt('input.csv', input_img, delimiter=',')
-        numpy.savetxt('output.csv', output_img, delimiter=',')
+        numpy.savetxt('/content/Results/input.csv', input_img, delimiter=',')
+        numpy.savetxt('/content/Results/output.csv', output_img, delimiter=',')
         plt.imsave(f'/content/Results/Input/{i}.png', input_img, cmap='gray')
         plt.imsave(f'/content/Results/Reconstructed/{i}.png', output_img, cmap='gray')
     final_kl_dict = {}
@@ -175,7 +175,7 @@ if args.action == 'calibrate':
     for i in final:
         final_kl_dict[f'{i[0]}'] = str(i[3])
         final_mse_dict[f'{i[0]}'] = str(i[4])
-    with open("kl_loss.json", "w") as KL_Json:
+    with open("/content/Losses/kl_loss.json", "w") as KL_Json:
         json.dump(final_kl_dict, KL_Json)
-    with open("mse_loss.json","w") as MSE_Json:
+    with open("/content/Losses/mse_loss.json","w") as MSE_Json:
         json.dump(final_mse_dict, MSE_Json)
