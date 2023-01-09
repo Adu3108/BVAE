@@ -224,14 +224,10 @@ class Vae_v5(torch.nn.Module):
             validation_losses.append(validation_loss_tensor.item())
             print('----------------------------------------------------')
         print('Training finished, saving weights...')
-
-        # open file in write mode
-        with open(r'/content/Losses/training_losses.txt', 'w') as fp:
-            for item in training_losses:
-                # write each item on a new line
-                fp.write("%s\n" % item)
-        with open(r'/content/Losses/validation_losses.txt', 'w') as fp:
-            for item in validation_losses:
-                # write each item on a new line
-                fp.write("%s\n" % item)
+        with open('/content/Losses/training_losses.txt', 'w') as f:
+            for line in training_losses:
+                f.write(f"{line}\n")
+        with open('/content/Losses/validation_losses.txt', 'w') as f:
+            for line in validation_losses:
+                f.write(f"{line}\n")
         torch.save(model, weights)

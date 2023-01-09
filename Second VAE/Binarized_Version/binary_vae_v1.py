@@ -162,7 +162,8 @@ class Binary_Vae_v1(torch.nn.Module):
             drop_last=True)
         
         optimizer = torch.optim.Adam(model.parameters())
-
+        training_losses = []
+        validation_losses = []
         for epoch in range(epochs):
             print('----------------------------------------------------')
             print(f'Epoch: {epoch}')
@@ -191,6 +192,7 @@ class Binary_Vae_v1(torch.nn.Module):
                 optimizer.zero_grad()
                 loss.backward()
                 optimizer.step()
+            training_losses.append(epoch_tl/train_count)
             print(f'Training Loss: {epoch_tl/train_count}')
             
             with torch.no_grad():
@@ -212,8 +214,15 @@ class Binary_Vae_v1(torch.nn.Module):
                     #    reduction='sum')
                     #epoch_vl += ce_loss + kl_loss
                     val_count += 1
+                validation_losses.append(epoch_vl/val_count)
                 print(f'Validation Loss: {epoch_vl/val_count}')
     
             print('----------------------------------------------------')
         print('Training finished, saving weights...')
+        with open('/content/Losses/training_losses.txt', 'w') as f:
+            for line in training_losses:
+                f.write(f"{line}\n")
+        with open('/content/Losses/validation_losses.txt', 'w') as f:
+            for line in validation_losses:
+                f.write(f"{line}\n")
         torch.save(model, weights)

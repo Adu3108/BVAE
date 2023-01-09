@@ -3,6 +3,7 @@ import json
 import numpy
 import torch
 import torchvision
+import os
 import matplotlib.pyplot as plt
 from Binarized_Version.binary_vae_v1 import Binary_Vae_v1
 from Normal_Version.vae_v1 import Vae_v1
@@ -25,9 +26,6 @@ parser.add_argument(
     choices=['normal','binarized'],
     required = True,
     help='Type of network to be used')
-parser.add_argument(
-    '--weights',
-    help='Path to weights file')
 parser.add_argument(
     '--weights',
     help='Path to weights file')
@@ -81,6 +79,8 @@ elif args.version == '5':
     Final_VAE = Vae_v5
 
 if args.action == 'train':
+    if not os.path.exists("/content/Losses"):
+        os.mkdir("/content/Losses")
     model = Final_VAE(
         input_d=tuple([int(i) for i in args.dimensions.split('x')]),
         n_frames=1 if args.flows <= 0 else args.flows,
