@@ -31,8 +31,7 @@ if __name__ == '__main__':
         help='Type of network to be used')
     parser.add_argument(
         '--weights',
-        help='Path to weights file (initial weights to use if the train '
-             'option is selected).')
+        help='Path to weights file (initial weights to use if the train option is selected).')
     parser.add_argument(
         '--beta',
         help='Beta value for training.')
@@ -41,16 +40,14 @@ if __name__ == '__main__':
         help='Number of latent variables in the model')
     parser.add_argument(
         '--dimensions',
-        help='Dimension of input image accepted by the network (height x '
-             'width).')
+        help='Dimension of input image accepted by the network (height x width).')
     parser.add_argument(
         '--grayscale',
         action='store_true',
         help='Network accepts grayscale images if this flag is selected.')
     parser.add_argument(
         '--dataset',
-        help='Path to dataset.  This data set should be a folder containing '
-             'subfolders for level of variation for each partition.')
+        help='Path to dataset.  This data set should be a folder containing subfolders for level of variation for each partition.')
     parser.add_argument(
         '--output_path',
         help='Path to directory where input images and their reconstructions will be stored')
