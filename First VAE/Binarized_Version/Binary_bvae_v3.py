@@ -8,7 +8,7 @@ import math
 import torch
 import torchvision
 import numpy as np
-from ..binarized_modules import  BinarizeLinear, BinarizeConv2d, BinarizeTransposeConv2d
+from .binarized_modules import  BinarizeLinear, BinarizeConv2d, BinarizeTransposeConv2d
 
 class Binary_BetaVae_v3(torch.nn.Module):
     """BetaVAE OOD detector.  This class includes both the encoder and

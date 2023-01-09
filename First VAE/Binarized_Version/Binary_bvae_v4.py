@@ -6,7 +6,7 @@ from typing import Tuple
 import math
 import torch
 import torchvision
-from ..binarized_modules import  BinarizeLinear, BinarizeConv2d
+from .binarized_modules import  BinarizeLinear, BinarizeConv2d
 
 class Binary_BetaVae_v4(torch.nn.Module):
     """BetaVAE OOD detector.  This class includes both the encoder and

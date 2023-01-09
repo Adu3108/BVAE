@@ -4,14 +4,14 @@ import sys
 import torch
 import torchvision
 import matplotlib.pyplot as plt
-from .Binarized_Version.Binary_bvae_v1 import Binary_BetaVae_v1, Binary_Encoder_v1
-from .Binarized_Version.Binary_bvae_v2 import Binary_BetaVae_v2, Binary_Encoder_v2
-from .Binarized_Version.Binary_bvae_v3 import Binary_BetaVae_v3, Binary_Encoder_v3
-from .Binarized_Version.Binary_bvae_v4 import Binary_BetaVae_v4, Binary_Encoder_v4
-from .Normal_Version.bvae_v1 import BetaVae_v1, Encoder_v1
-from .Normal_Version.bvae_v2 import BetaVae_v2, Encoder_v2
-from .Normal_Version.bvae_v3 import BetaVae_v3, Encoder_v3
-from .Normal_Version.bvae_v4 import BetaVae_v4, Encoder_v4
+from Binarized_Version.Binary_bvae_v1 import Binary_BetaVae_v1, Binary_Encoder_v1
+from Binarized_Version.Binary_bvae_v2 import Binary_BetaVae_v2, Binary_Encoder_v2
+from Binarized_Version.Binary_bvae_v3 import Binary_BetaVae_v3, Binary_Encoder_v3
+from Binarized_Version.Binary_bvae_v4 import Binary_BetaVae_v4, Binary_Encoder_v4
+from Normal_Version.bvae_v1 import BetaVae_v1, Encoder_v1
+from Normal_Version.bvae_v2 import BetaVae_v2, Encoder_v2
+from Normal_Version.bvae_v3 import BetaVae_v3, Encoder_v3
+from Normal_Version.bvae_v4 import BetaVae_v4, Encoder_v4
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser('Train or convert a BetaVAE model.')
@@ -19,11 +19,9 @@ if __name__ == '__main__':
         'action',
         choices=['train', 'convert','test'],
         metavar='ACTION',
-        required = True,
         help='Train a new network or convert one to encoder-only.')
     parser.add_argument(
         '--version',
-        choices=[1,2,3,4],
         required = True,
         help='The version of the network to be used')
     parser.add_argument(
@@ -61,28 +59,28 @@ if __name__ == '__main__':
     Final_VAE = None
     Final_Encoder = None
 
-    if args.version == 1:
+    if args.version == '1':
         if args.type == "binarized":
             Final_VAE = Binary_BetaVae_v1
             Final_Encoder = Binary_Encoder_v1
         else:
             Final_VAE = BetaVae_v1
             Final_Encoder = Encoder_v1
-    elif args.version == 2:
+    elif args.version == '2':
         if args.type == "binarized":
             Final_VAE = Binary_BetaVae_v2
             Final_Encoder = Binary_Encoder_v2
         else:
             Final_VAE = BetaVae_v2
             Final_Encoder = Encoder_v2
-    elif args.version == 3:
+    elif args.version == '3':
         if args.type == "binarized":
             Final_VAE = Binary_BetaVae_v3
             Final_Encoder = Binary_Encoder_v3
         else:
             Final_VAE = BetaVae_v3
             Final_Encoder = Encoder_v3
-    elif args.version == 4:
+    elif args.version == '4':
         if args.type == "binarized":
             Final_VAE = Binary_BetaVae_v4
             Final_Encoder = Binary_Encoder_v4
