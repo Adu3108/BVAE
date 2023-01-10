@@ -399,7 +399,7 @@ class Binary_BetaVae_v1(torch.nn.Module):
                 optimizer.step()
                 epoch_loss += loss
             print(f'Epoch: {epoch}; Loss: {loss}')
-            file2.write(f'Epoch: {epoch}; Loss: {loss}')
+            file2.write(f'{loss}')
             file2.write("\n")
         file2.close()
         print('Training finished, saving weights...')
