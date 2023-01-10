@@ -395,7 +395,6 @@ class Binary_BetaVae_v2(torch.nn.Module):
 
                 optimizer.zero_grad()
                 loss.backward()
-                print(dir(self))
                 # for p in list(self.parameters()):
                 #     if hasattr(p,'org'):
                 #         p.data.copy_(p.org)
