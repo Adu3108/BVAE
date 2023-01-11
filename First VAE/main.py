@@ -141,7 +141,7 @@ if __name__ == '__main__':
             beta,
             n_chan=1 if args.grayscale else 3,
             input_d=input_dimensions)
-        (input_final,output_final) = network.testing(args.dataset, args.weights)
+        (input_final,output_final,class_list) = network.testing(args.dataset, args.weights)
         error_array = []
         for i in range(len(input_final)):
           input_matrix = input_final[i][0][0] 
@@ -149,8 +149,8 @@ if __name__ == '__main__':
           matrix_shape = input_matrix.shape
           input_img = input_matrix.cpu().numpy()
           output_img = output_matrix.cpu().detach().numpy()
-          plt.imsave(args.output_path + f'/Input/{i}.png', input_img, cmap='gray')
-          plt.imsave(args.output_path + f'/Reconstructed/{i}.png', output_img, cmap='gray')
+          plt.imsave(args.output_path + f'/Input/{i}_{class_list[i]}.png', input_img, cmap='gray')
+          plt.imsave(args.output_path + f'/Reconstructed/{i}_{class_list[i]}.png', output_img, cmap='gray')
           error = 0
           for i in range(matrix_shape[0]):
             for j in range(matrix_shape[1]):

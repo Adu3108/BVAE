@@ -129,10 +129,12 @@ if args.action == 'calibrate':
     mse_losses = []
     final = []
     index = 0
+    class_list = []
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     with torch.no_grad():
-        for data in cal_loader:
-            x, _ = data
+        for data,idx in cal_loader:
+            x = data
+            class_list.append(int(idx))
             final_input = x
             x = x.to(device)
             x_hat, mu, logvar = model(x)
@@ -168,8 +170,8 @@ if args.action == 'calibrate':
         output_img = output_matrix.cpu().numpy()
         numpy.savetxt('/content/Results/input.csv', input_img, delimiter=',')
         numpy.savetxt('/content/Results/output.csv', output_img, delimiter=',')
-        plt.imsave(f'/content/Results/Input/{i}.png', input_img, cmap='gray')
-        plt.imsave(f'/content/Results/Reconstructed/{i}.png', output_img, cmap='gray')
+        plt.imsave(f'/content/Results/Input/{i}_{class_list[i]}.png', input_img, cmap='gray')
+        plt.imsave(f'/content/Results/Reconstructed/{i}_{class_list[i]}.png', output_img, cmap='gray')
     final_kl_dict = {}
     final_mse_dict = {}
     for i in final:
