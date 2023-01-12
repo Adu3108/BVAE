@@ -372,7 +372,7 @@ class BetaVae_v2(torch.nn.Module):
             drop_last=True)
 
         optimizer = torch.optim.Adam(network.parameters(), lr=1e-5)
-        file2 = open("/content/epoch_errors.txt","w")
+        training_losses = []
         for epoch in range(epochs):
             epoch_loss = 0
             for data in train_loader:
@@ -397,11 +397,13 @@ class BetaVae_v2(torch.nn.Module):
                 loss.backward()
                 optimizer.step()
                 epoch_loss += loss
+            training_losses.append(loss)
             print(f'Epoch: {epoch}; Loss: {loss}')
-            file2.write(f'Epoch: {epoch}; Loss: {loss}')
-            file2.write("\n")
-        file2.close()
+
         print('Training finished, saving weights...')
+        with open('/content/epoch_losses.txt', 'w') as f:
+            for line in training_losses:
+                f.write(f"{line}\n")
         torch.save(network.state_dict(), weights_file)
 
 
