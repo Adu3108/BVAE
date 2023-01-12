@@ -13,6 +13,17 @@ from Normal_Version.bvae_v2 import BetaVae_v2, Encoder_v2
 from Normal_Version.bvae_v3 import BetaVae_v3, Encoder_v3
 from Normal_Version.bvae_v4 import BetaVae_v4, Encoder_v4
 
+def mse_loss(output_matrix, input_matrix):
+    error = 0
+    matrix_shape = input_matrix.shape
+    for i in range(matrix_shape[0]):
+        for j in range(matrix_shape[1]):
+            error += (output_matrix[i][j] - input_matrix[i][j])**2
+    return math.sqrt(error)
+
+def kl_loss(mu, logvar):
+    return torch.mul(input=torch.sum(mu.pow(2) + logvar.exp() - logvar - 1, 1), other=0.5)
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser('Train or convert a BetaVAE model.')
     parser.add_argument(
@@ -141,23 +152,19 @@ if __name__ == '__main__':
             beta,
             n_chan=1 if args.grayscale else 3,
             input_d=input_dimensions)
-        (input_final,output_final,class_list) = network.testing(args.dataset, args.weights)
-        error_array = []
+        (input_final, output_final, final_mean, final_logvar, class_list) = network.testing(args.dataset, args.weights)
+        mse_losses = []
+        kl_losses = []
         for i in range(len(input_final)):
-          input_matrix = input_final[i][0][0] 
-          output_matrix = output_final[i][0][0] 
-          matrix_shape = input_matrix.shape
-          input_img = input_matrix.cpu().numpy()
-          output_img = output_matrix.cpu().detach().numpy()
-          plt.imsave(args.output_path + f'/Input/{i}_{int(class_list[i])}.png', input_img, cmap='gray')
-          plt.imsave(args.output_path + f'/Reconstructed/{i}_{int(class_list[i])}.png', output_img, cmap='gray')
-          error = 0
-          for i in range(matrix_shape[0]):
-            for j in range(matrix_shape[1]):
-              error += (output_matrix[i][j] - input_matrix[i][j])**2
-          error_array.append(math.sqrt(error))
-        file1 = open(args.output_path + "/errors.txt", "w")
-        for i in error_array:
-          file1.write(str(i))
-          file1.write("\n")
-        file1.close()
+            input_matrix = input_final[i][0][0] 
+            output_matrix = output_final[i][0][0] 
+            matrix_shape = input_matrix.shape
+            input_img = input_matrix.cpu().numpy()
+            output_img = output_matrix.cpu().detach().numpy()
+            plt.imsave(args.output_path + f'/Input/{i}_{int(class_list[i])}.png', input_img, cmap='gray')
+            plt.imsave(args.output_path + f'/Reconstructed/{i}_{int(class_list[i])}.png', output_img, cmap='gray')
+            mse_losses.append(mse_loss(output_matrix,input_matrix))
+            kl_losses.append(kl_loss(final_mean[i],final_logvar[i]))
+        with open(args.output_path + "/errors.txt", 'w') as f:
+            for i in range(len(mse_losses)):
+                f.write(f"{mse_losses[i]} {float(kl_losses[i])}\n")

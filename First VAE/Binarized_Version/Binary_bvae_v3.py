@@ -307,7 +307,7 @@ class Binary_BetaVae_v3(torch.nn.Module):
         final_input = []
         final_output = []
         final_mean = []
-        final_var = []
+        final_logvar = []
         class_list = []
         for data, idx in train_loader:
             input = data
@@ -316,9 +316,9 @@ class Binary_BetaVae_v3(torch.nn.Module):
             output, mean, logvariance = network.forward(input)
             final_output.append(output)
             final_mean.append(mean)
-            final_var.append(logvariance)
+            final_logvar.append(logvariance)
             final_input.append(input)
-        return (final_input, final_output, class_list)
+        return (final_input, final_output, final_mean, final_logvar, class_list)
 
     def forward(self, x: torch.Tensor) -> Tuple[torch.Tensor]:
         """Make an inference with the network.
