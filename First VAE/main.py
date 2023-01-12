@@ -149,8 +149,8 @@ if __name__ == '__main__':
           matrix_shape = input_matrix.shape
           input_img = input_matrix.cpu().numpy()
           output_img = output_matrix.cpu().detach().numpy()
-          plt.imsave(args.output_path + f'/Input/{i}_{class_list[i]}.png', input_img, cmap='gray')
-          plt.imsave(args.output_path + f'/Reconstructed/{i}_{class_list[i]}.png', output_img, cmap='gray')
+          plt.imsave(args.output_path + f'/Input/{i}_{int(class_list[i])}.png', input_img, cmap='gray')
+          plt.imsave(args.output_path + f'/Reconstructed/{i}_{int(class_list[i])}.png', output_img, cmap='gray')
           error = 0
           for i in range(matrix_shape[0]):
             for j in range(matrix_shape[1]):
